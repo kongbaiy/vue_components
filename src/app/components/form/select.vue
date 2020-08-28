@@ -92,6 +92,18 @@ export default {
         }
     },
 
+    mounted() {
+      // document.body.addEventListener('touchend', (e) => {
+      //   // e.stopPropagation();
+      //   const { offsetParent, localName } = e.target;
+
+      //   console.log(localName);
+      //   if(offsetParent.className.indexOf('select') < 0 && localName !== 'input') {
+      //     console.log('yes');
+      //   }
+      // });
+    },
+
     methods: {
         onBlur() {
             this.clickTagEl(this.$refs['select-list'], status => {
