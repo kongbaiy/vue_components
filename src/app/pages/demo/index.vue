@@ -59,16 +59,15 @@
        * 设置视图显示
        * @param {boolean} status
        * */
-      setViewShow(status) {
+     async setViewShow(status) {
         const { view } = this.$refs;
 
         if(status) {
           this.showView = true;
-
-          this.$nextTick(callback => {
-            view.offsetHeight;
+          view.offsetHeight;
+          setTimeout(callback => {
             view.setAttribute('class', 'view view_active');
-          });
+          }, 20);
         } else {
           view.setAttribute('class', 'view');
         }
@@ -110,8 +109,12 @@
     width: 100%;
     height: 100%;
     background-color: #fff;
-    -webkit-transition: left 0.1s cubic-bezier(0.445, 0.05, 0.55, 0.95);
-    transition: left 0.1s cubic-bezier(0.445, 0.05, 0.55, 0.95);
+    -webkit-transition: left 0.1s linear;
+    transition: left 0.1s linear;
+    -webkit-backface-visibility: hidden;
+    -moz-backface-visibility: hidden;
+    -ms-backface-visibility: hidden;
+    backface-visibility: hidden;
   }
 
   .view_active {

@@ -93,23 +93,43 @@ export default {
     },
 
     mounted() {
+      // 多次绑定事件
       // document.body.addEventListener('touchend', (e) => {
       //   // e.stopPropagation();
       //   const { offsetParent, localName } = e.target;
-
-      //   console.log(localName);
       //   if(offsetParent.className.indexOf('select') < 0 && localName !== 'input') {
-      //     console.log('yes');
+      //     this.isFocus = false;
       //   }
       // });
+      // if(/iPhone|mac|iPod|iPad/i.test(navigator.userAgent)){
+      //   document.body.ontouchend = this.onBodyTouchend; //pc 端有效（isFocus 值打印后已改变， 但查看Vue data.isFocus 的变量未改变）
+      // }
+
+      // setInterval(callback => {
+      //   console.log('setInterval isFocus:', this.isFocus);
+      // }, 1000);
+
+
+      if(/iPhone|mac|iPod|iPad/i.test(navigator.userAgent)){
+        document.body.addEventListener('touchend', this.onBodyTouchend);
+      }
     },
 
     methods: {
+      onBodyTouchend(e) {
+        const { offsetParent, localName } = e.target;
+
+        if(offsetParent.className.indexOf('select') < 0 && localName !== 'input') {
+          this.isFocus = false;
+          console.log('onBodyTouchend isFocus:', this.isFocus);
+        }
+      },
+
         onBlur() {
-            this.clickTagEl(this.$refs['select-list'], status => {
-                this.isFocus = false;
-                document.onmouseup = null;
-            });
+          this.clickTagEl(this.$refs['select-list'], status => {
+            this.isFocus = false;
+            document.onmouseup = null;
+          });
         },
 
         clickTagEl(el, callback) {
@@ -128,9 +148,10 @@ export default {
 
         onSelectInput(e) {
             this.isFocus = !this.isFocus;
+            console.log('onSelectInput isFocus:', this.isFocus);
 
             if (this.isFocus) {
-                this.$refs['select-input'].focus();
+              this.$refs['select-input'].focus();
             }
         },
 

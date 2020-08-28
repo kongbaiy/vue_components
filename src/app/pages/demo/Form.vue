@@ -360,7 +360,7 @@ export default {
 <style lang="scss" scoped>
 .form-page {
     background-color: #2859ef;
-}
+  }
 
 .form-box {
     margin-top: -25px;
