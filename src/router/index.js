@@ -1,9 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
-import Calendar from '@/app/components/calendar'
-import Doem from '@/app/pages/doem'
-
+import Demo from '@/app/pages/demo'
 import NotFound from '@/components/hint/NotFound'
 
 Vue.use(Router);
@@ -12,19 +10,30 @@ export default new Router({
   routes: [
     {
       path: '/',
-      redirect: '/calendar'
+      redirect: '/demo'
     },
 
     {
-      path: '/calendar',
-      name: 'calendar',
-      component: Calendar
-    },
-
-    {
-      path: '/doem',
-      name: 'doem',
-      component: Doem
+      path: '/demo',
+      name: 'demo',
+      component: Demo,
+      children: [
+        {
+          path: '/form',
+          name: 'form',
+          component: () => import('@/app/pages/demo/Form')
+        },
+        {
+          path: '/calendar',
+          name: 'calendar',
+          component: () => import('@/app/components/calendar')
+        },
+        {
+          path: '/input',
+          name: 'input',
+          component: () => import('@/app/pages/demo/Input')
+        }
+      ]
     },
 
     {

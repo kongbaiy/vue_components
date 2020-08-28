@@ -33,4 +33,24 @@
     outline: none;
     border: 0;
   }
+
+  ol, ul {
+    list-style-image: none;
+    list-style-position: outside;
+    list-style-type: none;
+  }
+
+  a {
+    outline: none;
+    text-decoration: none;
+    -webkit-backface-visibility: hidden;
+    -webkit-tap-highlight-color: transparent;
+    color: #000;
+  }
+
+  a, a:hover, a:active, a:visited, a:link, a:focus{
+    outline:none;
+    background: none;
+    text-decoration: none;
+  }
 </style>

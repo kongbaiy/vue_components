@@ -5,7 +5,7 @@
                 {{form.title}}
             </p>
         </div>
-        <custom-form :model="form" :rules="rules" ref="form">
+        <custom-form :model="form" :rules="rules" :container-el="formContainerEl" ref="form">
             <div class="form-box">
                 <custom-form-item required label="姓名" prop="nikename">
                     <custom-input
@@ -320,17 +320,19 @@ export default {
             },
             roleList: ['A', 'B'],
             winDefaultHeight: document.documentElement.clientHeight,
-            showSubmitBtn: true
+            showSubmitBtn: true,
+            formContainerEl: ''
         };
     },
 
     created() {
 
-
     },
 
     mounted() {
       window.onresize = this.onWindowResize;
+
+      this.formContainerEl = document.querySelector('.demo .view');
     },
 
     methods: {

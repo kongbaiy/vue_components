@@ -15,6 +15,11 @@ export default {
         rules: {
             type: Object,
             default: () => {}
+        },
+
+        containerEl: {
+          type: '',
+          default: ''
         }
     },
 
@@ -95,7 +100,8 @@ export default {
             }
             $children.map(item => {
                 if (item.prop === el_identifier) {
-                    window.scrollTo({
+
+                    (this.containerEl || window)['scrollTo']({
                         top: item.$el.offsetTop,
                         behavior: 'smooth'
                     });
