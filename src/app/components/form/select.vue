@@ -119,7 +119,7 @@ export default {
       onBodyTouchend(e) {
         const { offsetParent, localName } = e.target;
 
-        if(offsetParent.className.indexOf('select') < 0 && localName !== 'input') {
+        if(offsetParent && offsetParent.className.indexOf('select') < 0 && localName !== 'input') {
           this.isFocus = false;
           console.log('onBodyTouchend isFocus:', this.isFocus);
         }
