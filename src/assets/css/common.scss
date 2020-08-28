@@ -1,0 +1,33 @@
+@mixin flex-default {
+    display: flex;
+}
+
+@mixin flex-cc {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+@mixin flex-cb {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+@mixin flex-ca {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+@mixin flexColumn {
+    display: flex;
+    flex-direction: column;
+}
+
+@mixin btn-default {
+    cursor: pointer;
+    -moz-user-select:none;
+    -webkit-user-select:none;
+    user-select:none;    
+}
