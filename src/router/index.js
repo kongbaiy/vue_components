@@ -32,6 +32,11 @@ export default new Router({
           path: '/input',
           name: 'input',
           component: () => import('@/app/pages/demo/Input')
+        },
+        {
+          path: '/list',
+          name: 'list',
+          component: () => import('@/app/pages/demo/List')
         }
       ]
     },

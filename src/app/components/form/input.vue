@@ -1,7 +1,15 @@
 <template>
     <div>
         <div class="input-box">
-            <input :type="type" :placeholder="placeholder" :minlength="minlength" :maxlength="maxlength" v-model="val" @blur="onBlur" @input="onInput">
+            <input
+             :type="type" 
+             :placeholder="placeholder" 
+             :minlength="minlength" 
+             :maxlength="maxlength" 
+             v-model="val" 
+             @blur="onBlur" 
+             @input="onInput"
+            />
         </div>
     </div>
 </template>
@@ -63,8 +71,8 @@
                     this.val = this.val.slice(0, this.maxlength)
                 }
 
-                // this.$emit('input', this.HTMLEncode(this.val));
-                this.$emit('input', this.val);
+                this.$emit('input', this.HTMLEncode(this.val));
+                // this.$emit('input', this.val);
             },
 
             /**

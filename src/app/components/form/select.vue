@@ -115,6 +115,10 @@ export default {
       }
     },
 
+    destroyed() {
+        document.body.removeEventListener('touchend', this.onBodyTouchend);
+    },
+
     methods: {
       onBodyTouchend(e) {
         const { offsetParent, localName } = e.target;
