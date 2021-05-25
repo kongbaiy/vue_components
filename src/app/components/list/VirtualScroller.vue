@@ -1,17 +1,24 @@
 <template>
-  <div>
-    <div :style="{ height }" class="scroll" @scroll="onScroll">
-      <slot></slot>
+  <div class="virtual-scroll-container" :style="{ height }" @scroll="_onScroll">
+    <div class="content" :style="{ height: `${(value.length - 1) * 111}px` }">
+      <div class="viewing-area">
+        <div v-for="(item, index) in list" :key="index" class="slot-box">
+          <slot v-bind="item"></slot>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import VirtualScrolled from '@/utils/VirtualScroller';
-
 export default {
+  model: {
+    prop: 'value',
+    event: 'update',
+  },
+
   props: {
-    data: {
+    value: {
       type: Array,
       default: () => []
     },
@@ -19,46 +26,70 @@ export default {
       type: String,
       default: '100vh'
     },
-    triggerDistance: {
-      type: Number,
-      default: 100
+    page: {
+      type: [Number, String],
+      default: 1
     }
   },
 
   data() {
     return {
       scrollTopVal: 0,
-      lock: false
+      timeout: '',
+      perNum: 0
+    };
+  },
+
+  mounted() {
+  },
+
+  computed: {
+    list() {
+      const { value, scrollTopVal } = this;
+      const start = Math.floor(scrollTopVal / 110),
+        end = start + 10;
+
+      return value.slice(start, end);
     }
   },
 
   methods: {
-    onScroll({ target }) {
-      const { scrollTop, scrollHeight, offsetHeight } = target;
-      const { data, triggerDistance, scrollTopVal } = this;
-      const handel = VirtualScrolled(data);
+    _onScroll({ target }) {
+      const { scrollTop } = target;
+      const VA = document.querySelector(".viewing-area");
+      const curNum =  Math.floor(scrollTop / 110);
 
-      if (scrollTopVal && scrollTop < scrollTopVal) {
-        if (triggerDistance && scrollTop <= triggerDistance) {
-        }
+      if (this.scrollTopVal && scrollTop < this.scrollTopVal) {
+
       } else {
-        if (scrollTop >= scrollHeight - offsetHeight - triggerDistance && !this.lock) {
-          this.lock = true;
-          handel((data) => {
-            this.lock = false;
-            this.$emit('add', data);
-          });
-        }
+
+      }
+
+
+      // VA.setAttribute('style', `margin-top:(${scrollTop}px)`);
+      if(this.perNum != curNum || scrollTop < 56) {
+        this.perNum = curNum;
+        VA.setAttribute('style', `transform: translateY(${scrollTop}px)`);
       }
       this.scrollTopVal = scrollTop;
+
     },
-  }
+
+    _antiShake(callback) {
+      clearTimeout(this.timeout);
+      this.timeout = setTimeout(() => {
+        callback();
+      });
+    },
+  },
 };
 </script>
 
 <style lang="scss" scoped>
-  .scroll {
-    overflow-y: scroll;
-    -webkit-overflow-scrolling: touch;
+.virtual-scroll-container {
+  overflow: auto;
+  .content {
+    overflow: hidden;
   }
+}
 </style>
