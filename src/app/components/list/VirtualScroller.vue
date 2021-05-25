@@ -65,7 +65,6 @@ export default {
 
       }
 
-
       // VA.setAttribute('style', `margin-top:(${scrollTop}px)`);
       if(this.perNum != curNum || scrollTop < 56) {
         this.perNum = curNum;
