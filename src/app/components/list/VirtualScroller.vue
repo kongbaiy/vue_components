@@ -1,8 +1,13 @@
 <template>
   <div class="virtual-scroll-container" :style="{ height }" @scroll="_onScroll">
-    <div class="content" :style="{ height: `${(value.length - 1) * 111}px` }">
+    <div class="content" :style="{ height: contentHeight }">
       <div class="viewing-area">
-        <div v-for="(item, index) in list" :key="index" class="slot-box">
+        <div
+          v-for="(item, index) in list"
+          :key="'slotbox_' + index"
+          ref="slotbox"
+          class="slot-box"
+        >
           <slot v-bind="item"></slot>
         </div>
       </div>
@@ -13,65 +18,86 @@
 <script>
 export default {
   model: {
-    prop: 'value',
-    event: 'update',
+    prop: "value",
+    event: "update",
   },
 
   props: {
     value: {
       type: Array,
-      default: () => []
+      default: () => [],
     },
     height: {
       type: String,
-      default: '100vh'
+      default: "100vh",
     },
-    page: {
-      type: [Number, String],
-      default: 1
-    }
+    showNumber: {
+      type: Number,
+      default: 10,
+    },
+    triggerDistance: {
+      type: Number,
+      default: 20,
+    },
   },
 
   data() {
     return {
+      slotBoxHeight: 1,
       scrollTopVal: 0,
-      timeout: '',
-      perNum: 0
+      pervScrollNum: 0,
+      timeout: "",
     };
-  },
-
-  mounted() {
   },
 
   computed: {
     list() {
-      const { value, scrollTopVal } = this;
-      const start = Math.floor(scrollTopVal / 110),
-        end = start + 10;
+      const { value, scrollTopVal, slotBoxHeight, showNumber } = this;
+      const start = Math.floor(scrollTopVal / slotBoxHeight),
+        end = start + showNumber;
 
       return value.slice(start, end);
-    }
+    },
+
+    contentHeight() {
+      const { value, slotBoxHeight } = this;
+
+      return slotBoxHeight * (value.length - 1) + "px";
+    },
+  },
+
+  mounted() {
+    this.slotBoxHeight = this.$refs["slotbox"][0].offsetHeight;
   },
 
   methods: {
     _onScroll({ target }) {
-      const { scrollTop } = target;
+      const { scrollTop, scrollHeight, offsetHeight } = target;
+      const { slotBoxHeight, triggerDistance } = this;
       const VA = document.querySelector(".viewing-area");
-      const curNum =  Math.floor(scrollTop / 110);
+      const curr_scroll_num = Math.floor(scrollTop / slotBoxHeight);
 
       if (this.scrollTopVal && scrollTop < this.scrollTopVal) {
+        if (triggerDistance && scrollTop <= triggerDistance) {
+          this.$emit("scrollTop");
+        }
 
+        if (scrollTop < this.scrollTopVal && scrollTop < slotBoxHeight) {
+          VA.setAttribute("style", `transform: translateY(${scrollTop}px)`);
+        }
       } else {
-
+        if (scrollTop >= scrollHeight - offsetHeight - triggerDistance) {
+          this._antiShake(() => {
+            this.$emit("scrollBottom");
+          });
+        }
       }
 
-      // VA.setAttribute('style', `margin-top:(${scrollTop}px)`);
-      if(this.perNum != curNum || scrollTop < 56) {
-        this.perNum = curNum;
-        VA.setAttribute('style', `transform: translateY(${scrollTop}px)`);
+      if (this.pervScrollNum != curr_scroll_num) {
+        this.pervScrollNum = curr_scroll_num;
+        VA.setAttribute("style", `transform: translateY(${scrollTop}px)`);
       }
       this.scrollTopVal = scrollTop;
-
     },
 
     _antiShake(callback) {

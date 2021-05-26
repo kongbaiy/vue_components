@@ -1,11 +1,9 @@
 <template>
   <div>
     <h1>virtual list</h1>
-    <virtual-scroller v-model="list" :page="page" @load="onLoad">
+    <virtual-scroller v-model="list" @scrollTop="onScrollTop" @scrollBottom="onScrollBottom">
       <template slot-scope="scope">
-        <div class="list-item">
-          {{scope.title}}{{scope.index}}
-      </div>
+        <div class="list-item">{{ scope.title }}{{ scope.index }}</div>
       </template>
     </virtual-scroller>
   </div>
@@ -14,41 +12,44 @@
 <script>
 export default {
   components: {
-    VirtualScroller: () => import('@/app/components/list/VirtualScroller'),
+    VirtualScroller: () => import("@/app/components/list/VirtualScroller"),
   },
 
   data() {
     return {
       page: 1,
-      list: [
-      ]
+      list: [],
     };
   },
 
   mounted() {
-    let arr = [];
-    for(let i = 0;i < 20; i++) {
-      arr.push({
-        title: 'list',
-        index: i + 1
-      });
-    }
-     this.list = arr;
+    this.renderList();
   },
 
   methods: {
-    onLoad({ direction }) {
-      // if (direction === 'up') {
-      //   if(this.page < this.list.length - 1) {
-      //     this.page ++;
-      //   }
-      // } else {
-      //   if(this.page > 1) {
-      //     this.page --;
-      //   }
-      // }
-      // console.log(this.page);
-    }
+    onScrollTop() {
+      console.log('yes scroll top');
+    },
+    onScrollBottom() {
+      console.log('yes scroll bottom');
+      this.renderList(true);
+    },
+
+    renderList(isMore) {
+      console.log('isMore:', isMore);
+      let arr = [];
+      for (let i = 0; i < 20; i++) {
+        arr.push({
+          title: "list",
+          index: i + 1,
+        });
+      }
+
+      if(isMore) {
+        arr = this.list.concat(arr);
+      }
+      this.list = arr;
+    },
   },
 };
 </script>
