@@ -55,7 +55,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
 .list-item {
+  padding: 0 20px;
   height: 110px;
   background-color: #ddd;
   border-bottom: 1px solid;

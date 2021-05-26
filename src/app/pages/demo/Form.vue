@@ -51,6 +51,7 @@
                         placeholder="请输入微信"
                         maxlength="20"
                         v-model="form.wechat"
+                        limit="[\W],g"
                     />
                 </custom-form-item>
 

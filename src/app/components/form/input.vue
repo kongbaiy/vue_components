@@ -2,12 +2,12 @@
     <div>
         <div class="input-box">
             <input
-             :type="type" 
-             :placeholder="placeholder" 
-             :minlength="minlength" 
-             :maxlength="maxlength" 
-             v-model="val" 
-             @blur="onBlur" 
+             :type="type"
+             :placeholder="placeholder"
+             :minlength="minlength"
+             :maxlength="maxlength"
+             v-model="val"
+             @blur="onBlur"
              @input="onInput"
             />
         </div>
@@ -39,6 +39,10 @@
             value: {
                 type: [String, Number],
                 default: ''
+            },
+            limit: {
+              type: String,
+              default: ''
             }
         },
 
@@ -67,6 +71,14 @@
             },
 
             onInput() {
+                const { limit } = this;
+
+                if (limit) {
+                  let limit_arr = limit.split(',');
+
+                  this.val = this.val.replace(new RegExp(limit_arr[0], limit_arr[1]), '');
+                }
+
                 if (this.maxlength && this.val > this.maxlength) {
                     this.val = this.val.slice(0, this.maxlength)
                 }

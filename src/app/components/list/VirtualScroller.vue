@@ -67,7 +67,9 @@ export default {
   },
 
   mounted() {
-    this.slotBoxHeight = this.$refs["slotbox"][0].offsetHeight;
+    this.$nextTick(callback => {
+      this.slotBoxHeight = this.$refs["slotbox"][0].offsetHeight;
+    });
   },
 
   methods: {
