@@ -51,6 +51,7 @@
                         placeholder="请输入微信"
                         maxlength="20"
                         v-model="form.wechat"
+                        limit="[\W],g"
                     />
                 </custom-form-item>
 
@@ -371,7 +372,7 @@ export default {
         position: fixed;
         left: 0;
         bottom: 0;
-        z-index: 9;
+        z-index: 11 !important;
         box-sizing: border-box;
         padding: 16px 16px 20px 16px;
         width: 100%;

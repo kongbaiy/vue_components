@@ -224,7 +224,7 @@ export default {
     position: absolute;
     left: 0;
     top: 110%;
-    z-index: 9;
+    z-index: 9999;
     overflow-y: scroll;
     -webkit-overflow-scrolling: touch;
     width: 100%;

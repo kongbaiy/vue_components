@@ -1,64 +1,68 @@
 <template>
-    <div>
-        <ul class="list" @scroll="onListScroll">
-            <li class="list-item" v-for="(item, index) in 11" :key="index">{{'item' + index}}</li>
-        </ul>
-    </div>
+  <div>
+    <h1>virtual list</h1>
+    <virtual-scroller v-model="list" @scrollTop="onScrollTop" @scrollBottom="onScrollBottom">
+      <template slot-scope="scope">
+        <div class="list-item">{{ scope.title }}{{ scope.index }}</div>
+      </template>
+    </virtual-scroller>
+  </div>
 </template>
 
 <script>
-    export default {
-        data() {
-            return {
-                list: [
-                    
-                ],
-                scrollTop: 0
-            }
-        },
+export default {
+  components: {
+    VirtualScroller: () => import("@/app/components/list/VirtualScroller"),
+  },
 
-        mounted() {
-        },
+  data() {
+    return {
+      page: 1,
+      list: [],
+    };
+  },
 
-        methods: {
-            onListScroll({ target }) {
-                const { scrollTop, scrollHeight, offsetHeight } = target;
-                const scroll_trigger_val = 110;
+  mounted() {
+    this.renderList();
+  },
 
-                if(this.scrollTop && scrollTop < this.scrollTop) {
-                    console.log('top');
+  methods: {
+    onScrollTop() {
+      console.log('yes scroll top');
+    },
+    onScrollBottom() {
+      console.log('yes scroll bottom');
+      this.renderList(true);
+    },
 
-                    if(scroll_trigger_val && scrollTop <= scroll_trigger_val) {
-                        console.log('top trigger');
-                    }
-                } else {
-                    console.log('bottom');
+    renderList(isMore) {
+      console.log('isMore:', isMore);
+      let arr = [];
+      for (let i = 0; i < 20; i++) {
+        arr.push({
+          title: "list",
+          index: i + 1,
+        });
+      }
 
-                    if(scrollTop >= scrollHeight - offsetHeight - scroll_trigger_val) {
-                        console.log('bottom trigger');
-                    }
-                }
-                this.scrollTop = scrollTop;
-            },
-
-
-        }
-        
-    }
+      if(isMore) {
+        arr = this.list.concat(arr);
+      }
+      this.list = arr;
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>
-    .list {
-        margin: 20px;
-        overflow-y: scroll;
-        -webkit-overflow-scrolling: touch;
-        height: calc(100vh - 40px);
-        .list-item {
-            height: 60px;
-            border-bottom: 1px solid;
-            border-color: rgba(0,0,0,0.1);
-            font-size: 20px;
-            line-height: 60px;
-        }
-    }
+
+.list-item {
+  padding: 0 20px;
+  height: 110px;
+  background-color: #ddd;
+  border-bottom: 1px solid;
+  border-color: rgba(0, 0, 0, 0.1);
+  font-size: 30px;
+  line-height: 110px;
+}
 </style>
