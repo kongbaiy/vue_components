@@ -224,7 +224,6 @@
 
             _renderYear(year, callback){
                 let date = new Date();
-
                 this.year = year || date.getFullYear();
 
                 for(let i = 0;i < 12; i++){
